@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Flask Example</title>
+	<style>
+		h1 {
+			margin-bottom: 10px;
+		}
+		input {
+			margin-bottom: 10px;
+			padding: 5px;
+			border: 1px solid gray;
+			border-radius: 5px;
+		}
+		form button {
+			padding: 10px;
+			background-color: #4CAF50;
+			color: white;
+			border: none;
+			border-radius: 5px;
+			cursor: pointer;
+		}
+		form button:hover {
+			background-color: #3e8e41;
+		}
+	</style>
+</head>
+<body>
+	<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+	<h1>On/Off: {{ VKL }}</h1>
+	<h1>Max temp: {{ temperaturaMAX }}</h1>
+	<h1>Power: {{ power }}</h1>
+	<h1>Temperature: <span id="Temperatura">0</span></h1>
+
+	<form method="POST" action="/">
+		<button type="submit">On/Off</button>
+	</form>
+	<h1><input type="text" name="MaxTemp" id="MaxTemp">Max Temp</input></h1>
+	<h1><input type="text" name="Power" id="Power">Power</input></h1>
+<script>
+<!-- this function sends the maximum temperature and power of the kettle-->
+$(function() {
+    setInterval(function() {
+        var MaxTemp = $('#MaxTemp').val();
+        var Power = $('#Power').val();
+        $.post('/copy_text', {'MaxTemp' : MaxTemp, 'Power' : Power});
+    }, 1000);
+});
+<!-- this function receives the temperature value in the kettle from the server -->
+$(function() {
+  setInterval(function() {
+    $.get('/get_data', function(data) {
+      $('#Temperatura').text(data);
+    });
+  }, 1000);
+});
+</script>
+</body>
+</html>
